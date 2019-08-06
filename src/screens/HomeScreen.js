@@ -4,6 +4,7 @@ import { TextInput, Text, Title, ActivityIndicator, Button } from 'react-native-
 import { Container, Content, Icon} from 'native-base';
 import { firebase } from '@react-native-firebase/firestore';
 import { Button as PaperButton, Paragraph, Dialog, Portal } from 'react-native-paper';
+import { connect } from 'react-redux';
 import SignupSheet from '../components/SignupSheet';
 const width = Dimensions.get('window').width; 
 const height = Dimensions.get('window').height; 
@@ -11,8 +12,7 @@ const height = Dimensions.get('window').height;
 const styles = StyleSheet.create({
 
 })
-
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
   static navigationOptions = {
     header: null,
     tabBarColor: '#694fad',
@@ -185,3 +185,17 @@ export default class HomeScreen extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.default.user,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+

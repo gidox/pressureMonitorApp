@@ -12,6 +12,7 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { Appbar } from 'react-native-paper';
 import HomeScreen from '../screens/HomeScreen.js';
 import MyAccount from '../screens/MyAccount';
+import Splash from '../screens/Splash';
 
 
 import { Icon } from 'native-base';
@@ -40,14 +41,19 @@ const AppDrawer = createDrawerNavigator(
   }
 );
 
+const SplashStack = createStackNavigator(
+  {
+    Splash: Splash
+  }
+)
 
 const AppSwitchNavigator = createSwitchNavigator(
   {
-
+    Splash: { screen: SplashStack },
     AppDrawer: { screen: AppDrawer },
 
   }, {
-    initialRouteName: 'AppDrawer'
+    initialRouteName: 'Splash'
   }
 );
 

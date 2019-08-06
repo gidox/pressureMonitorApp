@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
-  Button
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { Title } from 'react-native-paper';
+import { Title, Text } from 'react-native-paper';
+import { Form, Button, Icon } from 'native-base';
+import { AccessToken, LoginManager } from "react-native-fbsdk";
+import auth from '@react-native-firebase/auth';
 
 const styles = StyleSheet.create({
   bottomModal: {
@@ -33,7 +34,46 @@ export default class SignupSheet extends Component {
     this.state = {
     };
   }
+  async facebookLogin() {
+    try {
+      const result = await LoginManager.logInWithPermissions([
+        "public_profile",
+        "email",
+      ]);
 
+      if (result.isCancelled) {
+        // handle this however suites the flow of your app
+        throw new Error("User cancelled request");
+      }
+
+      console.log(
+        `Login success with permissions: ${result.grantedPermissions.toString()}`
+      );
+
+      // get the access token
+      const data = await AccessToken.getCurrentAccessToken();
+
+      if (!data) {
+        // handle this however suites the flow of your app
+        throw new Error(
+          "Something went wrong obtaining the users access token"
+        );
+      }
+
+      // create a new firebase credential with the token
+      const credential = auth.FacebookAuthProvider.credential(
+        data.accessToken
+      );
+
+      // login with credential
+      const firebaseUserCredential = await auth()
+        .signInWithCredential(credential);
+
+      console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
+    } catch (e) {
+      console.error(e);
+    }
+  }
   render() {
     const {
       isVisible, onSwipeComplete, bottomModal, dismiss
@@ -41,16 +81,28 @@ export default class SignupSheet extends Component {
     return (
       <Modal
         isVisible={isVisible}
+        onBackButtonPress={() => dismiss()}
+        onBackdropPress={() => dismiss()}
         onSwipeComplete={() => onSwipeComplete()}
         swipeDirection={['up', 'left', 'right', 'down']}
         style={styles.bottomModal}
       >
       <View style={styles.content}>
         <Title style={{ }}>Log In</Title>
-        <Button
-          onPress={() => dismiss()}
-          title="Close"
-        />
+        <Form>
+          <Button 
+            style={{ backgroundColor: '#415a95'}} 
+            full rounded 
+            onPress={this.facebookLogin}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon name="logo-facebook" style={{ color: '#FFF' }} />
+
+              <Text style={{ color: '#FFF', fontSize: 14 }}>With Facebook</Text>
+
+            </View>
+          </Button>
+        </Form>
       </View>
       </Modal>
     );
