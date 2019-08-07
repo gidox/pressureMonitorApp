@@ -6,6 +6,9 @@ import { firebase } from '@react-native-firebase/firestore';
 import { Button as PaperButton, Paragraph, Dialog, Portal } from 'react-native-paper';
 import { connect } from 'react-redux';
 import SignupSheet from '../components/SignupSheet';
+import { setUserData } from '../actions/user';
+import moment from 'moment';
+
 const width = Dimensions.get('window').width; 
 const height = Dimensions.get('window').height; 
 
@@ -30,21 +33,25 @@ class HomeScreen extends Component {
     };
     this.ref = firebase.firestore().collection('pressuremeditions');
   }
-    bs = React.createRef()
+
   async componentDidMount() {
-    const querySnapshot = await firebase.firestore()
-      .collection('users')
-      .get();
+    const querySnapshot = await this.ref.get();
       
     console.log('Total users', querySnapshot.size);
     console.log('User Documents', querySnapshot.docs);
+    console.log('User Documents2', querySnapshot.data);
+
   }
 
   addTodo() {
+    const { dia, sys } = this.state;
+    const { user } = this.props;
     this.setState({ loading: true }, () => { 
       this.ref.add({
-        dia: this.state.dia,
-        sys: this.state.sys,
+        dia,
+        sys,
+        uid: user.data.uid,
+        created_at: moment(new Date).format(),
       });
       setTimeout(() => {
         this.setState({
@@ -62,33 +69,14 @@ class HomeScreen extends Component {
   _hideDialog = () => {
     this.setState({ modalVisible: false })
   }
-  renderInner = () => (
-    <View >
-      <Text >San Francisco Airport</Text>
-      <Text >
-        International Airport - 40 miles away
-      </Text>
-      <View >
-        <Text >Directions</Text>
-      </View>
-      <View >
-        <Text >Search Nearby</Text>
-      </View>
 
-    </View>
-  )
-
-  renderHeader = () => (
-    <View >
-      <View >
-        <View  />
-      </View>
-    </View>
-  )
   render() {
     const {
       loading, dia, sys, modalVisible, signupVisible
     } = this.state;
+    const { 
+      user, setUserData
+    } = this.props;
     const widthPad = width / 4;
     const marginTopHeader = height / 18; 
     const headerWidth =  width / 2; 
@@ -100,6 +88,7 @@ class HomeScreen extends Component {
           onSwipeComplete={() => this.setState({ signupVisible: false })}
           dismiss={() => this.setState({ signupVisible: false })}
           swipeDirection={['up', 'left', 'right', 'down']}
+          setUserData={setUserData}
         />
 
 
@@ -124,7 +113,15 @@ class HomeScreen extends Component {
 
           </SafeAreaView>
 
-          <Title style={{ textAlign: 'center'}}>Como esta tu presion hoy? </Title>
+          {user && user.data && (
+            <Title style={{ textAlign: 'center'}}>Hola {user.data.displayName}, como esta tu presion hoy?</Title>
+            
+          )}
+
+          {!user || !user.data && (
+            <Title style={{ textAlign: 'center'}}>Como esta tu presion hoy?</Title>
+            
+          )}
           {loading && (
              <ActivityIndicator animating={true} />
           )}
@@ -161,9 +158,11 @@ class HomeScreen extends Component {
                   mode="contained" 
                   style={{ paddingVertical: 10}} 
                   onPress={() => {
-                    this.setState({ signupVisible: true });
-                    // this.bs.current.snapTo(0)
-                    // this.addTodo()
+                    if (!user || !user.data || !user.data.uid) {
+                      this.setState({ signupVisible: true });
+                    } else {
+                      this.addTodo()
+                    }
                   }}
                   disabled={sys === '' || dia === ''}
                 >
@@ -194,6 +193,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    setUserData: data => dispatch(setUserData(data)),
+
   };
 }
 

@@ -208,6 +208,8 @@ PODS:
   - React-RCTWebSocket (0.60.4):
     - React-Core (= 0.60.4)
     - React-fishhook (= 0.60.4)
+  - RNCAsyncStorage (1.6.1):
+    - React
   - RNFBApp (0.1.2):
     - Firebase/Core (~> 6.5.0)
     - React
@@ -254,6 +256,7 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app/ios`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth/ios`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore/ios`)"
@@ -331,6 +334,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   React-RCTWebSocket:
     :path: "../node_modules/react-native/Libraries/WebSocket"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app/ios"
   RNFBAuth:
@@ -391,6 +396,7 @@ SPEC CHECKSUMS:
   React-RCTText: 36c0532feb5521cb295ba80e7e44b70cf1c36fc7
   React-RCTVibration: dabb8d59bb47e1d9124b3f77bfdc1b33d42b0a74
   React-RCTWebSocket: f32b93e0953d7c07fd5dd45305406282cfdc95cf
+  RNCAsyncStorage: e99188b8a89ea0edddc82d8831cd5142f4550fdc
   RNFBApp: 950b2aead4d0aea7e8e47a026c3bd043acab8893
   RNFBAuth: c19d86862574971a0226cc7eb9d7e469241688e0
   RNFBFirestore: 6d1b9faf7588829833088f814581e28dafaccd50

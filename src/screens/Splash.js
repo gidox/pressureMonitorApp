@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { AccessToken, LoginManager } from "react-native-fbsdk";
+import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import { setUserData } from '../actions/user';
@@ -17,6 +18,14 @@ class Splash extends Component {
     } = this.props;
     try {
       // get the access token
+      // const result = await LoginManager.logInWithPermissions(['public_profile', 'email'])
+
+      const uid = await AsyncStorage.getItem('@user');
+
+      if (!uid || uid === '') {
+        throw {};
+      }
+
       const data = await AccessToken.getCurrentAccessToken();
 
       if (!data) {
@@ -40,7 +49,7 @@ class Splash extends Component {
       navigation.navigate('AppDrawer');
 
     } catch (e) {
-      console.error(e);
+      console.log(e);
       navigation.navigate('AppDrawer');
 
     }

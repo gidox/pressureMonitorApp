@@ -8,6 +8,7 @@ import { Title, Text } from 'react-native-paper';
 import { Form, Button, Icon } from 'native-base';
 import { AccessToken, LoginManager } from "react-native-fbsdk";
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const styles = StyleSheet.create({
   bottomModal: {
@@ -34,7 +35,8 @@ export default class SignupSheet extends Component {
     this.state = {
     };
   }
-  async facebookLogin() {
+  facebookLogin = async () => {
+    const { setUserData } = this.props;
     try {
       const result = await LoginManager.logInWithPermissions([
         "public_profile",
@@ -69,7 +71,11 @@ export default class SignupSheet extends Component {
       const firebaseUserCredential = await auth()
         .signInWithCredential(credential);
 
-      console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
+      const userData = firebaseUserCredential.user.toJSON();
+      await AsyncStorage.setItem('@user', userData.uid);
+      setUserData(userData);
+
+      console.warn(JSON.stringify(userData));
     } catch (e) {
       console.error(e);
     }

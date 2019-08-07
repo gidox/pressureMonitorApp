@@ -13,6 +13,8 @@ import { Appbar } from 'react-native-paper';
 import HomeScreen from '../screens/HomeScreen.js';
 import MyAccount from '../screens/MyAccount';
 import Splash from '../screens/Splash';
+import Statistics from '../screens/Statistics';
+
 
 
 import { Icon } from 'native-base';
@@ -21,6 +23,8 @@ import { Icon } from 'native-base';
 const AppStack = createMaterialBottomTabNavigator(
   {
     Home: { screen: HomeScreen },
+    Statistics: { screen: Statistics },
+
     MyAccount: { screen: MyAccount },
 
   },
