@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import { View,t, SafeAreaView } from 'react-native';
 import { Icon, Container, Content } from 'native-base';
-import { Button, Title, Paragraph, Card, Avatar } from 'react-native-paper';
+import { Button, Title, Paragraph, Card, Avatar, Text, Subheading } from 'react-native-paper';
 import { firebase } from '@react-native-firebase/firestore';
 import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
-export default class Statistics extends Component {
+class Statistics extends Component {
   static navigationOptions = {
     header: null,
     tabBarColor: '#c51162',
@@ -18,7 +19,7 @@ export default class Statistics extends Component {
     this.state = {
       pressures: []
     };
-    this.ref = firebase.firestore().collection('pressuremeditions');
+    this.ref = firebase.firestore().collection('pressuremeditions').where("uid", "==", props.user.data.uid);
   }
 
   componentDidMount() {
@@ -49,19 +50,37 @@ export default class Statistics extends Component {
       <Container>
         <Content padder style={{ backgroundColor: '#eaeaea' }}>
           <SafeAreaView>
-            <Title>Tus mediciones pasadas:</Title>
+            <Title style={{ fontSize: 20, marginBottom: 20, }}>Tus mediciones pasadas:</Title>
           </SafeAreaView>
           <FlatList
             data={pressures}
+            ItemSeparatorComponent={() => (<View style={{ marginVertical: 5 }} />)}
             renderItem={({item}) => (
               <Card>
-                <Card.Title title={moment(item.created_at).format('DD-MM-YYYY')} subtitle={moment(item.created_at).format('hh:mm a')} left={(props) => <Avatar.Icon {...props} icon="folder" />} />
+                <Card.Title title={moment(item.created_at).format('DD-MM-YYYY')} subtitle={moment(item.created_at).format('hh:mm a')} left={(props) => <Avatar.Icon {...props} icon='favorite' style={{ backgroundColor: "#c23616"}} />} />
                 <Card.Content>
-                  <Title>Medicion</Title>
+                  {/* <Title>Medicion</Title> */}
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View style={{ alignItems: 'center' }}>
+                      <Subheading></Subheading>
+                      <Text style={{ fontSize: 24, fontWeight: 'bold', }}>SYS</Text>
+                      <Text style={{ fontSize: 24 }}>{item.sys}</Text>
+                    </View>
+                    <View style={{ alignItems: 'center' }}>
+                      <Subheading></Subheading>
+                      <Text style={{ fontSize: 24, fontWeight: 'bold', }}>DIA</Text>
+                      <Text style={{ fontSize: 24 }}>{item.dia}</Text>
+                    </View>
+                    <View style={{ alignItems: 'center' }}>
+                      <Subheading></Subheading>
+                      <Text style={{ fontSize: 24, fontWeight: 'bold', }}>PULSE</Text>
+                      <Text style={{ fontSize: 24 }}>{item.dia}</Text>
+                    </View>
+                  </View>
                 </Card.Content>
                 <Card.Actions>
-                  <Button>Cancel</Button>
-                  <Button>Ok</Button>
+                  {/* <Button>Cancel</Button>
+                  <Button>Ok</Button> */}
                 </Card.Actions>
               </Card>
 
@@ -72,3 +91,19 @@ export default class Statistics extends Component {
     );
   }
 }
+
+
+function mapStateToProps(state) {
+  return {
+    user: state.default.user,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Statistics);
+

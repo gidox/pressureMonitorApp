@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Dimensions, Image, SafeAreaView, StyleSheet } from 'react-native';
-import { TextInput, Text, Title, ActivityIndicator, Button } from 'react-native-paper';
+import { TextInput, Text, Title, ActivityIndicator, Button, Subheading } from 'react-native-paper';
 import { Container, Content, Icon} from 'native-base';
 import { firebase } from '@react-native-firebase/firestore';
 import { Button as PaperButton, Paragraph, Dialog, Portal } from 'react-native-paper';
@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import SignupSheet from '../components/SignupSheet';
 import { setUserData } from '../actions/user';
 import moment from 'moment';
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 const width = Dimensions.get('window').width; 
 const height = Dimensions.get('window').height; 
@@ -27,9 +28,12 @@ class HomeScreen extends Component {
     this.state = {
       dia: '',
       sys: '',
+      pulse: '',
+      date: '',
       loading: false,
       signupVisible: false,
       modalVisible: false,
+      isDateTimePickerVisible: false
     };
     this.ref = firebase.firestore().collection('pressuremeditions');
   }
@@ -43,20 +47,36 @@ class HomeScreen extends Component {
 
   }
 
+  showDateTimePicker = () => {
+    console.log("tap")
+    this.setState({ isDateTimePickerVisible: true });
+  };
+  hideDateTimePicker = () => {
+    this.setState({ isDateTimePickerVisible: false });
+  };
+  handleDatePicked = date => {
+    console.log("A date has been picked: ", date);
+    this.setState({ date });
+    this.hideDateTimePicker();
+  };
+  
   addTodo() {
-    const { dia, sys } = this.state;
+    const { dia, sys, pulse, date } = this.state;
     const { user } = this.props;
     this.setState({ loading: true }, () => { 
       this.ref.add({
         dia,
         sys,
         uid: user.data.uid,
-        created_at: moment(new Date).format(),
+        pulse,
+        created_at: !date || date === '' ? moment(new Date).format(): moment(date).format(),
       });
       setTimeout(() => {
         this.setState({
           dia: '',
           sys: '',
+          date: '',
+          pulse: '',
           loading: false,
           modalVisible: true
         });
@@ -72,13 +92,13 @@ class HomeScreen extends Component {
 
   render() {
     const {
-      loading, dia, sys, modalVisible, signupVisible
+      loading, dia, sys, modalVisible, signupVisible, pulse, date
     } = this.state;
     const { 
       user, setUserData
     } = this.props;
     const widthPad = width / 4;
-    const marginTopHeader = height / 18; 
+    const marginTopHeader = 20; 
     const headerWidth =  width / 2; 
 
     return (
@@ -90,7 +110,12 @@ class HomeScreen extends Component {
           swipeDirection={['up', 'left', 'right', 'down']}
           setUserData={setUserData}
         />
-
+        <DateTimePicker
+          mode='datetime'
+          isVisible={this.state.isDateTimePickerVisible}
+          onConfirm={this.handleDatePicked}
+          onCancel={this.hideDateTimePicker}
+        />
 
         <Content padder>
           <Portal>
@@ -129,7 +154,7 @@ class HomeScreen extends Component {
             <View
             
             >
-              <View style={{ marginHorizontal: widthPad, marginTop: marginTopHeader, marginBottom: 30}}>
+              <View style={{ marginHorizontal: widthPad, marginTop: marginTopHeader, marginBottom: 15}}>
                 <TextInput
                   mode="outlined"
                   label='SYS(MmHg'
@@ -140,7 +165,7 @@ class HomeScreen extends Component {
                 />
 
               </View>
-              <View style={{ marginHorizontal: widthPad, marginTop: 10, marginBottom: 30}}>
+              <View style={{ marginHorizontal: widthPad, marginTop: 10, marginBottom: 15}}>
                 <TextInput
                   mode="outlined"
                   label='DIA(MmHg)'
@@ -150,8 +175,25 @@ class HomeScreen extends Component {
                 />
 
               </View>
+              <View style={{ marginHorizontal: widthPad, marginTop: 10, marginBottom: 15}}>
+                <TextInput
+                  mode="outlined"
+                  label='PULSE'
+                  style={{ fontSize: 30, height: 80, textAlign: 'center' }}
+                  value={pulse}
+                  onChangeText={text => this.setState({ pulse: text })}
+                />
+
+              </View>
+
+              <Button  mode="text" onPress={() => { this.showDateTimePicker()}}>
+                Fecha Pasada
+              </Button>
+              
+
+
               <View
-                style={{ flexDirection: 'row', flex: 5, justifyContent: 'center'}}
+                style={{ flexDirection: 'row', flex: 5, justifyContent: 'center', marginTop: 30 }}
               >
                 <Button 
                   icon="camera" 
@@ -168,10 +210,18 @@ class HomeScreen extends Component {
                 >
                   Enviar
                 </Button>
+                              
+
 
               </View>
             
+                {date && date !== '' ? (
+                  <View>
+                    <Text style={{ textAlign: 'center', fontSize: 16}}>{`Fecha Seleccionada: ${moment(date).format('DD-MM-YYYY hh:mm a')}`}</Text>
 
+                  </View>
+
+                ): null}
             </View>
 
           
