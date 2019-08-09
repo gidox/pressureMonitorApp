@@ -38,7 +38,7 @@ export default class SignupSheet extends Component {
   facebookLogin = async () => {
     const { setUserData } = this.props;
     try {
-      LoginManager.setLoginBehavior('web')
+      LoginManager.setLoginBehavior('native')
       const result = await LoginManager.logInWithPermissions([
         "public_profile",
         "email",
@@ -78,7 +78,7 @@ export default class SignupSheet extends Component {
 
       console.warn(JSON.stringify(userData));
     } catch (e) {
-      console.error(e);
+      console.log(e);
     }
   }
   render() {
@@ -100,7 +100,13 @@ export default class SignupSheet extends Component {
           <Button 
             style={{ backgroundColor: '#415a95'}} 
             full rounded 
-            onPress={this.facebookLogin}
+            onPress={() => {
+              dismiss();
+              setTimeout(() => {
+                this.facebookLogin()
+
+              },300)
+            }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Icon name="logo-facebook" style={{ color: '#FFF' }} />

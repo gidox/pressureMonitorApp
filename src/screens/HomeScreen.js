@@ -161,6 +161,7 @@ class HomeScreen extends Component {
                   value={sys}
                   style={{ fontSize: 30, height: 80, textAlign: 'center' }}
                   dense={true}
+                  keyboardType='phone-pad'
                   onChangeText={text => this.setState({ sys: text })}
                 />
 
@@ -171,6 +172,7 @@ class HomeScreen extends Component {
                   label='DIA(MmHg)'
                   style={{ fontSize: 30, height: 80, textAlign: 'center' }}
                   value={dia}
+                  keyboardType='phone-pad'
                   onChangeText={text => this.setState({ dia: text })}
                 />
 
@@ -179,6 +181,7 @@ class HomeScreen extends Component {
                 <TextInput
                   mode="outlined"
                   label='PULSE'
+                  keyboardType='phone-pad'
                   style={{ fontSize: 30, height: 80, textAlign: 'center' }}
                   value={pulse}
                   onChangeText={text => this.setState({ pulse: text })}

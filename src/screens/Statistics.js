@@ -3,6 +3,7 @@ import { View,t, SafeAreaView } from 'react-native';
 import { Icon, Container, Content } from 'native-base';
 import { Button, Title, Paragraph, Card, Avatar, Text, Subheading } from 'react-native-paper';
 import { firebase } from '@react-native-firebase/firestore';
+import _ from 'lodash';
 import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -19,11 +20,19 @@ class Statistics extends Component {
     this.state = {
       pressures: []
     };
-    this.ref = firebase.firestore().collection('pressuremeditions').where("uid", "==", props.user.data.uid);
+    if (props.user.data && props.user.data.uid) {
+      this.ref = firebase.firestore().collection('pressuremeditions').where("uid", "==", props.user.data.uid);
+
+    }
   }
 
   componentDidMount() {
-    this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    //if temporal
+    const { user } = this.props;
+    if (user.data && user.data.uid) {
+      this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    
+    }
   }
   onCollectionUpdate = (querySnapshot) => {
     const pressures = [];
@@ -52,40 +61,50 @@ class Statistics extends Component {
           <SafeAreaView>
             <Title style={{ fontSize: 20, marginBottom: 20, }}>Tus mediciones pasadas:</Title>
           </SafeAreaView>
-          <FlatList
-            data={pressures}
-            ItemSeparatorComponent={() => (<View style={{ marginVertical: 5 }} />)}
-            renderItem={({item}) => (
-              <Card>
-                <Card.Title title={moment(item.created_at).format('DD-MM-YYYY')} subtitle={moment(item.created_at).format('hh:mm a')} left={(props) => <Avatar.Icon {...props} icon='favorite' style={{ backgroundColor: "#c23616"}} />} />
-                <Card.Content>
-                  {/* <Title>Medicion</Title> */}
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <View style={{ alignItems: 'center' }}>
-                      <Subheading></Subheading>
-                      <Text style={{ fontSize: 24, fontWeight: 'bold', }}>SYS</Text>
-                      <Text style={{ fontSize: 24 }}>{item.sys}</Text>
-                    </View>
-                    <View style={{ alignItems: 'center' }}>
-                      <Subheading></Subheading>
-                      <Text style={{ fontSize: 24, fontWeight: 'bold', }}>DIA</Text>
-                      <Text style={{ fontSize: 24 }}>{item.dia}</Text>
-                    </View>
-                    <View style={{ alignItems: 'center' }}>
-                      <Subheading></Subheading>
-                      <Text style={{ fontSize: 24, fontWeight: 'bold', }}>PULSE</Text>
-                      <Text style={{ fontSize: 24 }}>{item.dia}</Text>
-                    </View>
-                  </View>
-                </Card.Content>
-                <Card.Actions>
-                  {/* <Button>Cancel</Button>
-                  <Button>Ok</Button> */}
-                </Card.Actions>
-              </Card>
 
-            )}
-          />
+
+          {!pressures ||  _.isEmpty(pressures) && (
+            <View style={{ marginHorizontal: 30 }}>
+              <Text>No data found. Please add data</Text>
+            </View>
+
+          )}
+          {pressures &&  !_.isEmpty(pressures) && (
+            <FlatList
+              data={pressures}
+              ItemSeparatorComponent={() => (<View style={{ marginVertical: 5 }} />)}
+              renderItem={({item}) => (
+                <Card>
+                  <Card.Title title={moment(item.created_at).format('DD-MM-YYYY')} subtitle={moment(item.created_at).format('hh:mm a')} left={(props) => <Avatar.Icon {...props} icon='favorite' style={{ backgroundColor: "#c23616"}} />} />
+                  <Card.Content>
+                    {/* <Title>Medicion</Title> */}
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
+                      <View style={{ alignItems: 'center' }}>
+                        <Subheading></Subheading>
+                        <Text style={{ fontSize: 24, fontWeight: 'bold', }}>SYS</Text>
+                        <Text style={{ fontSize: 24 }}>{item.sys}</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Subheading></Subheading>
+                        <Text style={{ fontSize: 24, fontWeight: 'bold', }}>DIA</Text>
+                        <Text style={{ fontSize: 24 }}>{item.dia}</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Subheading></Subheading>
+                        <Text style={{ fontSize: 24, fontWeight: 'bold', }}>PULSE</Text>
+                        <Text style={{ fontSize: 24 }}>{item.dia}</Text>
+                      </View>
+                    </View>
+                  </Card.Content>
+                  <Card.Actions>
+                    {/* <Button>Cancel</Button>
+                    <Button>Ok</Button> */}
+                  </Card.Actions>
+                </Card>
+
+              )}
+            />
+          )}
         </Content>
       </Container>
     );

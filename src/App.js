@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Linking, Platform, AsyncStorage } from 'react-native';
+import { StatusBar } from 'react-native';
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
@@ -32,6 +32,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
+         <StatusBar backgroundColor="#E51B23" barStyle="light-content" />
         <PaperProvider>
           <AppContainer />
         </PaperProvider>
