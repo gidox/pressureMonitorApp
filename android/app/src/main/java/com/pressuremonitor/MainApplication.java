@@ -1,4 +1,4 @@
-package com.pressuremonitor;
+package com.aguilabs.pressuremonitor;
 
 import android.app.Application;
 
@@ -8,6 +8,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.facebook.react.PackageList;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.pressuremonitor;
+package com.aguilabs.pressuremonitor;
 
 import com.facebook.react.ReactActivity;
 

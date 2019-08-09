@@ -114,11 +114,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.pressuremonitor"
+        applicationId "com.aguilabs.pressuremonitor"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     splits {
         abi {
