@@ -38,6 +38,7 @@ export default class SignupSheet extends Component {
   facebookLogin = async () => {
     const { setUserData } = this.props;
     try {
+      LoginManager.setLoginBehavior('web')
       const result = await LoginManager.logInWithPermissions([
         "public_profile",
         "email",
