@@ -38,11 +38,16 @@ export default class SignupSheet extends Component {
   facebookLogin = async () => {
     const { setUserData } = this.props;
     try {
-      LoginManager.setLoginBehavior('native')
+      LoginManager.setLoginBehavior('browser')
+      console.log("antes");
+
       const result = await LoginManager.logInWithPermissions([
         "public_profile",
         "email",
       ]);
+      console.log("despues");
+
+      console.log(result);
 
       if (result.isCancelled) {
         // handle this however suites the flow of your app
