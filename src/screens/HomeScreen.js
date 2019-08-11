@@ -109,6 +109,7 @@ class HomeScreen extends Component {
           dismiss={() => this.setState({ signupVisible: false })}
           swipeDirection={['up', 'left', 'right', 'down']}
           setUserData={setUserData}
+          createPressure={() => this.addTodo()}
         />
         <DateTimePicker
           mode='datetime'

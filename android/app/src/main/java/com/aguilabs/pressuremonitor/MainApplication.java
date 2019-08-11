@@ -9,11 +9,15 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.facebook.react.PackageList;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.facebook.CallbackManager;
 
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
-
+  private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
+  protected static  CallbackManager getCallbackManager() {
+    return mCallbackManager;
+  }
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
     public boolean getUseDeveloperSupport() {
@@ -25,7 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       // additional non auto detected packages can still be added here:
-      // packages.add(new SomeReactNativePackage());
+      // packages.add(new FBSDKPackage());
+      
       return packages;
     }
 

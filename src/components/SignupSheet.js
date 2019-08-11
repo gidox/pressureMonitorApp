@@ -36,9 +36,9 @@ export default class SignupSheet extends Component {
     };
   }
   facebookLogin = async () => {
-    const { setUserData } = this.props;
+    const { setUserData, createPressure } = this.props;
     try {
-      LoginManager.setLoginBehavior('browser')
+      // LoginManager.setLoginBehavior('browser')
       console.log("antes");
 
       const result = await LoginManager.logInWithPermissions([
@@ -80,7 +80,7 @@ export default class SignupSheet extends Component {
       const userData = firebaseUserCredential.user.toJSON();
       await AsyncStorage.setItem('@user', userData.uid);
       setUserData(userData);
-
+      createPressure()
       console.warn(JSON.stringify(userData));
     } catch (e) {
       console.log(e);
