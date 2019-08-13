@@ -99,7 +99,7 @@ class HomeScreen extends Component {
     } = this.props;
     const widthPad = width / 4;
     const marginTopHeader = 20; 
-    const headerWidth =  width / 2; 
+    const headerWidth =  width / 2 - 40; 
 
     return (
       <Container>
@@ -158,10 +158,12 @@ class HomeScreen extends Component {
               <View style={{ marginHorizontal: widthPad, marginTop: marginTopHeader, marginBottom: 15}}>
                 <TextInput
                   mode="outlined"
-                  label='SYS(MmHg'
+                  label='SYS(MmHg)'
                   value={sys}
-                  style={{ fontSize: 30, height: 80, textAlign: 'center' }}
+                  style={{ fontSize: 30, height: 70, textAlign: 'center' }}
                   dense={true}
+                  returnKeyType='next'
+                  maxLength={3}
                   keyboardType='phone-pad'
                   onChangeText={text => this.setState({ sys: text })}
                 />
@@ -171,8 +173,10 @@ class HomeScreen extends Component {
                 <TextInput
                   mode="outlined"
                   label='DIA(MmHg)'
-                  style={{ fontSize: 30, height: 80, textAlign: 'center' }}
+                  style={{ fontSize: 30, height: 70, textAlign: 'center' }}
                   value={dia}
+                  returnKeyType='next'
+                  maxLength={3}
                   keyboardType='phone-pad'
                   onChangeText={text => this.setState({ dia: text })}
                 />
@@ -183,8 +187,10 @@ class HomeScreen extends Component {
                   mode="outlined"
                   label='PULSE'
                   keyboardType='phone-pad'
-                  style={{ fontSize: 30, height: 80, textAlign: 'center' }}
+                  style={{ fontSize: 30, height: 70, textAlign: 'center' }}
                   value={pulse}
+                  returnKeyType='done'
+                  maxLength={3}
                   onChangeText={text => this.setState({ pulse: text })}
                 />
 
@@ -202,7 +208,6 @@ class HomeScreen extends Component {
                 <Button 
                   icon="camera" 
                   mode="contained" 
-                  style={{ paddingVertical: 10}} 
                   onPress={() => {
                     if (!user || !user.data || !user.data.uid) {
                       this.setState({ signupVisible: true });

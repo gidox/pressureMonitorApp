@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { View,t, SafeAreaView } from 'react-native';
 import { Icon, Container, Content } from 'native-base';
-import { Button, Title, Paragraph, Card, Avatar, Text, Subheading } from 'react-native-paper';
+import { Button, Title, Paragraph, Card, Avatar, Text, Subheading, Menu, Divider } from 'react-native-paper';
 import { firebase } from '@react-native-firebase/firestore';
 import _ from 'lodash';
 import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import Chart from '../components/Chart';
 
 class Statistics extends Component {
   static navigationOptions = {
@@ -18,7 +19,9 @@ class Statistics extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pressures: []
+      pressures: [],
+      mode: 'sys',
+      visible: false,
     };
     if (props.user.data && props.user.data.uid) {
       this.ref = firebase.firestore().collection('pressuremeditions').where("uid", "==", props.user.data.uid);
@@ -34,6 +37,10 @@ class Statistics extends Component {
     
     }
   }
+
+  _openMenu = () => this.setState({ visible: true });
+  _closeMenu = () => this.setState({ visible: false });
+
   onCollectionUpdate = (querySnapshot) => {
     const pressures = [];
     querySnapshot.forEach((doc) => {
@@ -46,25 +53,47 @@ class Statistics extends Component {
         uid,
       });
     });
-    this.setState({
-      pressures,
-      isLoading: false,
-   });
+    if (!_.isEmpty(pressures)) {
+      const sortedArray = _.orderBy(pressures, (o) => {
+        return moment(o.created_at).format('YYYYMMDD');
+      }, ['asc']);
+      this.setState({
+        pressures: sortedArray,
+        isLoading: false,
+      });
+
+    }
   }
 
   render() {
     console.log(this.state);
-    const { pressures } = this.state;
+    const { pressures, mode } = this.state;
     return (
       <Container>
         <Content padder style={{ backgroundColor: '#eaeaea' }}>
           <SafeAreaView>
             <Title style={{ fontSize: 20, marginBottom: 20, }}>Tus mediciones pasadas:</Title>
           </SafeAreaView>
+          <Menu
+            visible={this.state.visible}
+            onDismiss={this._closeMenu}
+            anchor={
+              <Button onPress={this._openMenu}>{mode}</Button>
+            }
+          >
+            <Menu.Item onPress={() => this.setState({ mode: 'sys', visible: false })} title="SYS" />
+            <Divider />
+            <Menu.Item onPress={() => this.setState({ mode: 'dia', visible: false })} title="DIA" />
+          </Menu>
+          <Chart 
+            pressures={pressures}
+            mode={mode}
+          />
+          <Divider />
 
 
           {!pressures ||  _.isEmpty(pressures) && (
-            <View style={{ marginHorizontal: 30 }}>
+            <View style={{ marginHorizontal: 30, marginTop: 10 }}>
               <Text>No data found. Please add data</Text>
             </View>
 
@@ -72,7 +101,7 @@ class Statistics extends Component {
           {pressures &&  !_.isEmpty(pressures) && (
             <FlatList
               data={pressures}
-              ItemSeparatorComponent={() => (<View style={{ marginVertical: 5 }} />)}
+              ItemSeparatorComponent={() => (<View style={{ marginVertical: 5, marginTop: 10 }} />)}
               renderItem={({item}) => (
                 <Card>
                   <Card.Title title={moment(item.created_at).format('DD-MM-YYYY')} subtitle={moment(item.created_at).format('hh:mm a')} left={(props) => <Avatar.Icon {...props} icon='favorite' style={{ backgroundColor: "#c23616"}} />} />
