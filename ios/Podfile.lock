@@ -229,6 +229,8 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.3.0):
     - React
+  - RNLocalize (1.1.4):
+    - React
   - RNReanimated (1.1.0):
     - React
   - RNScreens (1.0.0-alpha.23):
@@ -269,6 +271,7 @@ DEPENDENCIES:
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth/ios`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore/ios`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -356,6 +359,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/firestore/ios"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNLocalize:
+    :path: "../node_modules/react-native-localize"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -417,6 +422,7 @@ SPEC CHECKSUMS:
   RNFBAuth: c19d86862574971a0226cc7eb9d7e469241688e0
   RNFBFirestore: 6d1b9faf7588829833088f814581e28dafaccd50
   RNGestureHandler: 7ccf2f3f60458e084f9ada01fbaf610f6fef073c
+  RNLocalize: fb8f1e17914d7251dc221374b486f4cb532aa7de
   RNReanimated: 45d9313b7a62318ed00d60a811937321e43e076e
   RNScreens: 354046589421edc3d83d5c6212475bf1fb9a731d
   RNSVG: 2e097b92aaa6d4e0f354fd7c49cbf3b17f8b3920

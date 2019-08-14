@@ -15,8 +15,9 @@ import {
   AdMobInterstitial,
   PublisherBanner,
 } from 'react-native-admob';
+import i18n from '../translations/i18n';
 
-
+const locale = i18n.currentLocale().split('-')[0];
 const width = Dimensions.get('window').width; 
 const height = Dimensions.get('window').height; 
 
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     marginTop: (Platform.OS === 'ios') ? 30 : 10,
   },
   example: {
-    paddingVertical: 10,
+    paddingVertical: 3,
   },
   title: {
     margin: 10,
@@ -143,6 +144,7 @@ class HomeScreen extends Component {
         />
         <DateTimePicker
           mode='datetime'
+          locale={locale}
           isVisible={this.state.isDateTimePickerVisible}
           onConfirm={this.handleDatePicked}
           onCancel={this.hideDateTimePicker}
@@ -169,13 +171,13 @@ class HomeScreen extends Component {
 
           </SafeAreaView>  
 
-          {user && user.data && (
-            <Title style={{ textAlign: 'center'}}>Hola {user.data.displayName}, como esta tu presion hoy?</Title>
+          {user && user.data && user.data.displayName && (
+            <Title style={{ textAlign: 'center'}}>{i18n.t('hi')} {user.data.displayName}, {i18n.t('howisyourblood')}</Title>
             
           )}
 
-          {!user || !user.data && (
-            <Title style={{ textAlign: 'center'}}>Como esta tu presion hoy?</Title>
+          {!user || !user.data || !user.data.displayName && (
+            <Title style={{ textAlign: 'center'}}>{`${i18n.t('hi')}, ${i18n.t('howisyourblood')}`}</Title>
             
           )}
           {loading && (
@@ -215,7 +217,7 @@ class HomeScreen extends Component {
               <View style={{ marginHorizontal: widthPad, marginTop: 10, marginBottom: 15}}>
                 <TextInput
                   mode="outlined"
-                  label='PULSE'
+                  label={i18n.t('pulse')}
                   keyboardType='phone-pad'
                   style={{ fontSize: 30, height: 70, textAlign: 'center' }}
                   value={pulse}
@@ -227,7 +229,7 @@ class HomeScreen extends Component {
               </View>
 
               <Button  mode="text" onPress={() => { this.showDateTimePicker()}}>
-                Fecha Pasada
+                {i18n.t('previousDate')}
               </Button>
               
 
@@ -247,7 +249,7 @@ class HomeScreen extends Component {
                   }}
                   disabled={sys === '' || dia === ''}
                 >
-                  Enviar
+                  {i18n.t('send')}
                 </Button>
                               
 
@@ -265,9 +267,9 @@ class HomeScreen extends Component {
               <BannerExample>
                 <AdMobBanner
                   adSize="banner"
-                  adUnitID="ca-app-pub-4138005863181000~9559988228"
+                  adUnitID="ca-app-pub-4138005863181000/3384380543"
                   testDevices={[AdMobBanner.simulatorId]}
-                  onAdFailedToLoad={error => console.error(error)}
+                  onAdFailedToLoad={error => console.log(error)}
                   
                 />
 

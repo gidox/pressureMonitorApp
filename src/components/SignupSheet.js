@@ -9,6 +9,7 @@ import { Form, Button, Icon } from 'native-base';
 import { AccessToken, LoginManager, GraphRequestManager, GraphRequest} from "react-native-fbsdk";
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-community/async-storage';
+import i18n from '../translations/i18n';
 
 const styles = StyleSheet.create({
   bottomModal: {
@@ -129,7 +130,7 @@ export default class SignupSheet extends Component {
       >
       <View style={styles.content}>
         <Title style={{ }}>Log In</Title>
-        <Subheading>Log in for record and track your presure.</Subheading>
+        <Subheading>{i18n.t('loginforuse')}</Subheading>
         <Form>
           <Button 
             style={{ backgroundColor: '#415a95'}} 
@@ -139,7 +140,7 @@ export default class SignupSheet extends Component {
               setTimeout(() => {
                 this.facebookLogin()
 
-              },300)
+              },100)
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>

@@ -5,6 +5,7 @@ import { Icon, Container, Content } from 'native-base';
 import { Button, Avatar, Title } from 'react-native-paper';
 import {  LoginManager } from "react-native-fbsdk";
 import { logout } from '../actions/user';
+import i18n from '../translations/i18n';
 
 
 class MyAccount extends Component {
@@ -26,15 +27,17 @@ class MyAccount extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, navigation } = this.props;
     return (
       <Container>
-        <Content>
+        <Content padder>
           <SafeAreaView/> 
           {!user.data || !user.data.uid && (
             <View>
-              <Title>Log in for view your pressures.</Title>
-
+              <Title style={{ textAlign: 'center' }}>{i18n.t('loginforuse')}</Title>
+              <Button style={{ marginTop: 30 }} mode="text" onPress={() => { navigation.navigate('Home')}}>
+                {i18n.t('gotohome')}
+              </Button>
 
             </View>
 
@@ -44,7 +47,7 @@ class MyAccount extends Component {
             <View>
               <View style={{ alignItems: 'center', }}>
                 <Avatar.Image size={200} source={{ uri: user.data.fbPic}} />
-                <Title>Hola {user.data.displayName}</Title>
+                <Title>{i18n.t('hi')} {user.data.displayName}</Title>
                                 
 
               </View>

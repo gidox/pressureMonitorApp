@@ -8,6 +8,9 @@ import { FlatList } from 'react-native-gesture-handler';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import Chart from '../components/Chart';
+import i18n from '../translations/i18n';
+
+const locale = i18n.currentLocale().split('-')[0];
 
 class Statistics extends Component {
   static navigationOptions = {
@@ -75,13 +78,13 @@ class Statistics extends Component {
   render() {
     console.log(this.state);
     const { pressures, mode } = this.state;
-    const { user } = this.props;
+    const { user, navigation } = this.props;
     if (user.data && user.data.uid) {
       return (
         <Container>
           <Content padder style={{ backgroundColor: '#eaeaea' }}>
             <SafeAreaView>
-              <Title style={{ fontSize: 20, marginBottom: 20, }}>Tus mediciones pasadas:</Title>
+              <Title style={{ fontSize: 20, marginBottom: 20, }}>{i18n.t('previousBloodPressure')}</Title>
             </SafeAreaView>
             <Menu
               visible={this.state.visible}
@@ -111,9 +114,12 @@ class Statistics extends Component {
               <FlatList
                 data={pressures}
                 ItemSeparatorComponent={() => (<View style={{ marginVertical: 5, marginTop: 10 }} />)}
-                renderItem={({item}) => (
+                renderItem={({item}) => {
+                  const title = locale === 'es' ? moment(item.created_at).format('DD-MM-YYYY') : moment(item.created_at).format('MM-DD-YYYY'); 
+
+                  return (
                   <Card>
-                    <Card.Title title={moment(item.created_at).format('DD-MM-YYYY')} subtitle={moment(item.created_at).format('hh:mm a')} left={(props) => <Avatar.Icon {...props} icon='favorite' style={{ backgroundColor: "#c23616"}} />} />
+                    <Card.Title title={title} subtitle={moment(item.created_at).format('hh:mm a')} left={(props) => <Avatar.Icon {...props} icon='favorite' style={{ backgroundColor: "#c23616"}} />} />
                     <Card.Content>
                       {/* <Title>Medicion</Title> */}
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -140,7 +146,7 @@ class Statistics extends Component {
                     </Card.Actions>
                   </Card>
 
-                )}
+                )}}
               />
             )}
           </Content>
@@ -150,9 +156,15 @@ class Statistics extends Component {
     }
     return (
       <Container>
-        <Content>
+        <Content padder>
           <SafeAreaView/>
-          <Title>Log in for view your pressures.</Title>
+          <View>
+            <Title style={{ textAlign: 'center' }}>{i18n.t('loginforuse')}</Title>
+            <Button style={{ marginTop: 30 }} mode="text" onPress={() => { navigation.navigate('Home')}}>
+              {i18n.t('gotohome')}
+            </Button>
+
+          </View>
         </Content>
       </Container>
     );

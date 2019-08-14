@@ -4,6 +4,7 @@ import {
   LineChart,
 } from 'react-native-chart-kit'
 import moment from 'moment';
+import _ from 'lodash';
 
 const screenWidth = Dimensions.get('window').width;
 const chartConfig = {
@@ -18,12 +19,16 @@ class Chart extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      data: {},
     };
+  }
+
+  componentWillMount () {
+
   }
 
   render() {
     const { pressures, mode } = this.props;
-
     const data = {
       labels: pressures.map(a => moment(a.created_at).format('Do')),
       datasets: [{
@@ -41,15 +46,21 @@ class Chart extends PureComponent {
         strokeWidth: 2 // optional
       }]
     }
+    console.log(data)
+
     return (
+    
       <View>
-        <LineChart
-          data={data}
-          width={screenWidth - 20}
-          height={220}
-          chartConfig={chartConfig}
-          bezier
-        />
+        {!_.isEmpty(data.datasets[0].data) && (
+          <LineChart
+            data={data}
+            width={screenWidth - 20}
+            height={220}
+            chartConfig={chartConfig}
+            bezier
+          />
+
+        )}
       </View>
     );
   }
