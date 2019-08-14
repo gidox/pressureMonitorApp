@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { AccessToken, LoginManager } from "react-native-fbsdk";
+import { View, Text, Dimensions, Image } from 'react-native';
+import { AccessToken, LoginManager, GraphRequest, GraphRequestManager } from "react-native-fbsdk";
 import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import { setUserData } from '../actions/user';
+const width = Dimensions.get('window').width; 
 
 class Splash extends Component {
+  static navigationOptions = {
+    header: null,
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -34,19 +38,37 @@ class Splash extends Component {
           "Something went wrong obtaining the users access token"
         );
       }
+      const graphRequest = new GraphRequest('/me', {
+        accessToken: data.accessToken,
+        parameters: {
+          fields: {
+            string: 'picture.type(large)',
+          },
+        },
+      }, async (error, result) => {
+        if (error) {
+          console.error(error)
+        } else {
+          console.log(result.picture.data.url)
+          // setSocialData(result.picture.data.)
+                // create a new firebase credential with the token
+            const credential = auth.FacebookAuthProvider.credential(
+              data.accessToken
+            );
 
-      // create a new firebase credential with the token
-      const credential = auth.FacebookAuthProvider.credential(
-        data.accessToken
-      );
+            // login with credential
+            const firebaseUserCredential = await auth()
+              .signInWithCredential(credential);
+            let userData = firebaseUserCredential.user.toJSON();
+            userData.fbPic = result.picture.data.url;
 
-      // login with credential
-      const firebaseUserCredential = await auth()
-        .signInWithCredential(credential);
+            setUserData(userData);
 
-      setUserData(firebaseUserCredential.user.toJSON());
+            navigation.navigate('AppDrawer');
+        }
+      })
+       new GraphRequestManager().addRequest(graphRequest).start()
 
-      navigation.navigate('AppDrawer');
 
     } catch (e) {
       console.log(e);
@@ -57,9 +79,12 @@ class Splash extends Component {
 
 
   render() {
+    const headerWidth =  width / 2; 
+
     return (
-      <View>
-        <Text> Splash </Text>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Image resizeMode='contain' source={require('../../assets/logo.png')} style={{ width:headerWidth  }}/>
+
       </View>
     );
   }

@@ -54,6 +54,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>GADApplicationIdentifier</key>
+  <string>ca-app-pub-4138005863181000~9559988228</string>
 	<key>FacebookAppID</key>
 	<string>863971833978144</string>
 	<key>FacebookDisplayName</key>

@@ -9,12 +9,38 @@ import SignupSheet from '../components/SignupSheet';
 import { setUserData } from '../actions/user';
 import moment from 'moment';
 import DateTimePicker from "react-native-modal-datetime-picker";
+import {
+  AdMobBanner,
+  AdMobRewarded,
+  AdMobInterstitial,
+  PublisherBanner,
+} from 'react-native-admob';
+
 
 const width = Dimensions.get('window').width; 
 const height = Dimensions.get('window').height; 
 
-const styles = StyleSheet.create({
+const BannerExample = ({ style, title, children, ...props }) => (
+  <View {...props} style={[styles.example, style]}>
+    <Text style={styles.title}>{title}</Text>
+    <View style={{ alignItems: 'center'}}>
+      {children}
+    </View>
+  </View>
+);
 
+const bannerWidths = [200, 250, 320];
+const styles = StyleSheet.create({
+  container: {
+    marginTop: (Platform.OS === 'ios') ? 30 : 10,
+  },
+  example: {
+    paddingVertical: 10,
+  },
+  title: {
+    margin: 10,
+    fontSize: 20,
+  },
 })
 class HomeScreen extends Component {
   static navigationOptions = {
@@ -40,12 +66,14 @@ class HomeScreen extends Component {
 
   async componentDidMount() {
     const querySnapshot = await this.ref.get();
-      
+
     console.log('Total users', querySnapshot.size);
     console.log('User Documents', querySnapshot.docs);
     console.log('User Documents2', querySnapshot.data);
-
+ 
   }
+
+
 
   showDateTimePicker = () => {
     console.log("tap")
@@ -103,6 +131,8 @@ class HomeScreen extends Component {
 
     return (
       <Container>
+
+
         <SignupSheet
           isVisible={signupVisible}
           onSwipeComplete={() => this.setState({ signupVisible: false })}
@@ -137,7 +167,7 @@ class HomeScreen extends Component {
 
             <Image resizeMode='contain' source={require('../../assets/logo.png')} style={{ width:headerWidth  }}/>
 
-          </SafeAreaView>
+          </SafeAreaView>  
 
           {user && user.data && (
             <Title style={{ textAlign: 'center'}}>Hola {user.data.displayName}, como esta tu presion hoy?</Title>
@@ -224,13 +254,26 @@ class HomeScreen extends Component {
 
               </View>
             
-                {date && date !== '' ? (
-                  <View>
-                    <Text style={{ textAlign: 'center', fontSize: 16}}>{`Fecha Seleccionada: ${moment(date).format('DD-MM-YYYY hh:mm a')}`}</Text>
+              {date && date !== '' ? (
+                <View>
+                  <Text style={{ textAlign: 'center', fontSize: 16}}>{`Fecha Seleccionada: ${moment(date).format('DD-MM-YYYY hh:mm a')}`}</Text>
 
-                  </View>
+                </View>
 
-                ): null}
+              ): null}
+
+              <BannerExample>
+                <AdMobBanner
+                  adSize="banner"
+                  adUnitID="ca-app-pub-4138005863181000~9559988228"
+                  testDevices={[AdMobBanner.simulatorId]}
+                  onAdFailedToLoad={error => console.error(error)}
+                  
+                />
+
+              </BannerExample>
+
+  
             </View>
 
           

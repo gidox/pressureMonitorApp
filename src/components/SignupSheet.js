@@ -4,9 +4,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { Title, Text } from 'react-native-paper';
+import { Title, Text, Subheading } from 'react-native-paper';
 import { Form, Button, Icon } from 'native-base';
-import { AccessToken, LoginManager } from "react-native-fbsdk";
+import { AccessToken, LoginManager, GraphRequestManager, GraphRequest} from "react-native-fbsdk";
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -39,7 +39,6 @@ export default class SignupSheet extends Component {
     const { setUserData, createPressure } = this.props;
     try {
       // LoginManager.setLoginBehavior('browser')
-      console.log("antes");
 
       const result = await LoginManager.logInWithPermissions([
         "public_profile",
@@ -79,9 +78,38 @@ export default class SignupSheet extends Component {
 
       const userData = firebaseUserCredential.user.toJSON();
       await AsyncStorage.setItem('@user', userData.uid);
-      setUserData(userData);
-      createPressure()
-      console.warn(JSON.stringify(userData));
+
+      const graphRequest = new GraphRequest('/me', {
+        accessToken: data.accessToken,
+        parameters: {
+          fields: {
+            string: 'picture.type(large)',
+          },
+        },
+      }, async (error, result) => {
+        if (error) {
+          console.error(error)
+        } else {
+          console.log(result.picture.data.url)
+          // setSocialData(result.picture.data.)
+                // create a new firebase credential with the token
+            const credential = auth.FacebookAuthProvider.credential(
+              data.accessToken
+            );
+
+            // login with credential
+            const firebaseUserCredential = await auth()
+              .signInWithCredential(credential);
+            let userData = firebaseUserCredential.user.toJSON();
+            userData.fbPic = result.picture.data.url;
+
+            setUserData(userData);
+            createPressure();
+        }
+      })
+      new GraphRequestManager().addRequest(graphRequest).start()
+
+
     } catch (e) {
       console.log(e);
     }
@@ -101,6 +129,7 @@ export default class SignupSheet extends Component {
       >
       <View style={styles.content}>
         <Title style={{ }}>Log In</Title>
+        <Subheading>Log in for record and track your presure.</Subheading>
         <Form>
           <Button 
             style={{ backgroundColor: '#415a95'}} 

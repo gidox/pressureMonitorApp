@@ -32,5 +32,7 @@
 	<string>1:748942240682:ios:564c9028d806416f</string>
 	<key>DATABASE_URL</key>
 	<string>https://pressuremonitor-535d0.firebaseio.com</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-4138005863181000~9559988228</string>
 </dict>
 </plist>

@@ -1,5 +1,6 @@
 import {
   SET_USER,
+  RESET
 } from '../constants';
 
 const initialState = {
@@ -16,6 +17,8 @@ export default function userReducer(state = initialState, action) {
         ...state,
         data: action.data,
       };
+    case RESET:
+      return initialState
     default:
       return state;
   }
