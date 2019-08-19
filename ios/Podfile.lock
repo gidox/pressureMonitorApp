@@ -210,8 +210,6 @@ PODS:
   - React-RCTWebSocket (0.60.4):
     - React-Core (= 0.60.4)
     - React-fishhook (= 0.60.4)
-  - RNAdMobManager (1.0.0):
-    - React
   - RNCAsyncStorage (1.6.1):
     - React
   - RNFBApp (0.1.2):
@@ -265,7 +263,6 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
-  - RNAdMobManager (from `../node_modules/react-native-google-admob`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app/ios`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth/ios`)"
@@ -347,8 +344,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   React-RCTWebSocket:
     :path: "../node_modules/react-native/Libraries/WebSocket"
-  RNAdMobManager:
-    :path: "../node_modules/react-native-google-admob"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNFBApp:
@@ -416,7 +411,6 @@ SPEC CHECKSUMS:
   React-RCTText: 36c0532feb5521cb295ba80e7e44b70cf1c36fc7
   React-RCTVibration: dabb8d59bb47e1d9124b3f77bfdc1b33d42b0a74
   React-RCTWebSocket: f32b93e0953d7c07fd5dd45305406282cfdc95cf
-  RNAdMobManager: 68b5130ddfbc1c560a0f8fd25c486773befdc14d
   RNCAsyncStorage: e99188b8a89ea0edddc82d8831cd5142f4550fdc
   RNFBApp: 950b2aead4d0aea7e8e47a026c3bd043acab8893
   RNFBAuth: c19d86862574971a0226cc7eb9d7e469241688e0
@@ -429,6 +423,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
   yoga: 88c514f310aff89b94a14c5fbf44b95735af0cb7
 
-PODFILE CHECKSUM: 79bc9b3978c9de5e7a2807e50b006c261768f32f
+PODFILE CHECKSUM: 8fda847a4de2dca9ee2ddefd934d3ba5402c3678
 
 COCOAPODS: 1.5.3

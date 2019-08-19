@@ -10,7 +10,7 @@ import {
 } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Appbar } from 'react-native-paper';
-import HomeScreen from '../screens/HomeScreen.js';
+import HomeScreen from '../screens/HomeScreen';
 import MyAccount from '../screens/MyAccount';
 import Splash from '../screens/Splash';
 import Statistics from '../screens/Statistics';

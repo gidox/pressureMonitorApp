@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Component } from 'react';
 import { View, Dimensions, Image, SafeAreaView, StyleSheet } from 'react-native';
 import { TextInput, Text, Title, ActivityIndicator, Button, Subheading } from 'react-native-paper';
 import { Container, Content, Icon} from 'native-base';
@@ -68,9 +69,6 @@ class HomeScreen extends Component {
   async componentDidMount() {
     const querySnapshot = await this.ref.get();
 
-    console.log('Total users', querySnapshot.size);
-    console.log('User Documents', querySnapshot.docs);
-    console.log('User Documents2', querySnapshot.data);
  
   }
 
@@ -267,7 +265,7 @@ class HomeScreen extends Component {
               <BannerExample>
                 <AdMobBanner
                   adSize="banner"
-                  adUnitID="ca-app-pub-4138005863181000/3384380543"
+                  adUnitID="ca-app-pub-4138005863181000/4391422023"
                   testDevices={[AdMobBanner.simulatorId]}
                   onAdFailedToLoad={error => console.log(error)}
                   

@@ -28,7 +28,6 @@ target 'pressureMonitor' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   pod 'Google-Mobile-Ads-SDK'
-  pod 'RNAdMobManager', :path => '../node_modules/react-native-google-admob'
 
 
   target 'pressureMonitorTests' do

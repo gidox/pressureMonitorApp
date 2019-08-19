@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import { Component } from 'react';
 import { StatusBar } from 'react-native';
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { Provider } from "react-redux";
