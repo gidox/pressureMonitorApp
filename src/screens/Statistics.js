@@ -54,18 +54,19 @@ class Statistics extends Component {
   onCollectionUpdate = (querySnapshot) => {
     const pressures = [];
     querySnapshot.forEach((doc) => {
-      const { dia, sys, created_at, uid } = doc.data();
+      const { dia, sys, pulse, created_at, uid } = doc.data();
       pressures.push({
         key: doc.id,
         dia, // DocumentSnapshot
         sys,
+        pulse,
         created_at,
         uid,
       });
     });
     if (!_.isEmpty(pressures)) {
       const sortedArray = _.orderBy(pressures, (o) => {
-        return moment(o.created_at).format('YYYYMMDD');
+        return moment(o.created_at).format('YYYYMMDD HH:mm:ss');
       }, ['asc']);
       this.setState({
         pressures: sortedArray,
@@ -120,26 +121,32 @@ class Statistics extends Component {
                   return (
                   <Card>
                     <Card.Title title={title} subtitle={moment(item.created_at).format('hh:mm a')} left={(props) => <Avatar.Icon {...props} icon='favorite' style={{ backgroundColor: "#c23616"}} />} />
-                    <Card.Content>
-                      {/* <Title>Medicion</Title> */}
-                      <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <View style={{ alignItems: 'center' }}>
-                          <Subheading></Subheading>
-                          <Text style={{ fontSize: 24, fontWeight: 'bold', }}>SYS</Text>
-                          <Text style={{ fontSize: 24 }}>{item.sys}</Text>
+                      <Card.Content>
+                        {/* <Title>Medicion</Title> */}
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                          <View style={{ alignItems: 'center' }}>
+                            <Subheading></Subheading>
+                            <Text style={{ fontSize: 24, fontWeight: 'bold', }}>SYS</Text>
+                            {item.sys > 132 ? (
+                              <Text style={{ fontSize: 24, backgroundColor: '#FFB833' }}>{item.sys}</Text>
+                            ) : (<Text style={{ fontSize: 24, backgroundColor: '#60F937' }}>{item.sys}</Text>)}
+                          </View>
+                          <View style={{ alignItems: 'center' }}>
+                            <Subheading></Subheading>
+                            <Text style={{ fontSize: 24, fontWeight: 'bold', }}>DIA</Text>
+                            {item.dia > 83 ? (
+                              <Text style={{ fontSize: 24, backgroundColor: '#FFB833' }}>{item.dia}</Text>
+                            ) : (<Text style={{ fontSize: 24, backgroundColor: '#60F937' }}>{item.dia}</Text>)}
+                          </View>
+                          <View style={{ alignItems: 'center' }}>
+                            <Subheading></Subheading>
+                            <Text style={{ fontSize: 24, fontWeight: 'bold', }}>PULSE</Text>
+                            {item.pulse > 95 ? (
+                              <Text style={{ fontSize: 24, backgroundColor: '#FFB833' }}>{item.pulse}</Text>
+                            ) : (<Text style={{ fontSize: 24, backgroundColor: '#60F937' }}>{item.pulse}</Text>)}
+                          </View>
                         </View>
-                        <View style={{ alignItems: 'center' }}>
-                          <Subheading></Subheading>
-                          <Text style={{ fontSize: 24, fontWeight: 'bold', }}>DIA</Text>
-                          <Text style={{ fontSize: 24 }}>{item.dia}</Text>
-                        </View>
-                        <View style={{ alignItems: 'center' }}>
-                          <Subheading></Subheading>
-                          <Text style={{ fontSize: 24, fontWeight: 'bold', }}>PULSE</Text>
-                          <Text style={{ fontSize: 24 }}>{item.dia}</Text>
-                        </View>
-                      </View>
-                    </Card.Content>
+                      </Card.Content>
                     <Card.Actions>
                       {/* <Button>Cancel</Button>
                       <Button>Ok</Button> */}
