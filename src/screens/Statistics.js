@@ -23,6 +23,7 @@ class Statistics extends Component {
     super(props);
     this.state = {
       pressures: [],
+      pressures1: [],
       mode: 'sys',
       visible: false,
     };
@@ -67,9 +68,13 @@ class Statistics extends Component {
     if (!_.isEmpty(pressures)) {
       const sortedArray = _.orderBy(pressures, (o) => {
         return moment(o.created_at).format('YYYYMMDD HH:mm:ss');
+      }, ['desc']);
+      const sortedArray1 = _.orderBy(pressures, (o) => {
+        return moment(o.created_at).format('YYYYMMDD HH:mm:ss');
       }, ['asc']);
       this.setState({
         pressures: sortedArray,
+        pressures1: sortedArray1,
         isLoading: false,
       });
 
@@ -78,7 +83,7 @@ class Statistics extends Component {
 
   render() {
     console.log(this.state);
-    const { pressures, mode } = this.state;
+    const { pressures, pressures1, mode } = this.state;
     const { user, navigation } = this.props;
     if (user.data && user.data.uid) {
       return (
@@ -99,7 +104,7 @@ class Statistics extends Component {
               <Menu.Item onPress={() => this.setState({ mode: 'dia', visible: false })} title="DIA" />
             </Menu>
             <Chart 
-              pressures={pressures}
+              pressures={pressures1}
               mode={mode}
             />
             <Divider />
